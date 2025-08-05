@@ -15,8 +15,12 @@ export interface IUser {
   password: string;
   role?: Role;
   isBlocked?: boolean;
-  approved?: boolean;
-  online?: boolean;
+  isApproved?: boolean; 
+  availability?: boolean; 
+    vehicleInfo?: {
+    type: string;
+    plate: string;
+  };
   createdAt?: Date;
   updatedAt?: Date;
 }
