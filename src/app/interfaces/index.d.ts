@@ -1,10 +1,10 @@
-import { JwtPayload } from "jsonwebtoken";
-
+// src/types/express/index.d.ts
+import { AuthPayload } from '../../interfaces/auth';
 
 declare global {
-    namespace Express {
-        interface Request {
-            user: JwtPayload
-        }
+  namespace Express {
+    export interface Request {
+      user?: AuthPayload;
     }
+  }
 }

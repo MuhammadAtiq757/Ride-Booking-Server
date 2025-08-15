@@ -1,40 +1,42 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
+import { IRide } from './rider.interface';
+import { RideStatus } from '../../interfaces/common';
 
-const rideSchema = new Schema(
+
+const locationSchema = new Schema(
   {
-    rider: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    driver: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    pickupLocation: {
-      address: String,
-      coordinates: { type: [Number], index: "2dsphere" }, // [lng, lat]
+    address: String,
+    coordinates: {
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true },
     },
-    destinationLocation: {
-      address: String,
-      coordinates: { type: [Number], index: "2dsphere" },
-    },
+  },
+  { _id: false }
+);
+
+const rideSchema = new Schema<IRide>(
+  {
+    rider: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    driver: { type: Schema.Types.ObjectId, ref: 'User' },
+    pickup: { type: locationSchema, required: true },
+    destination: { type: locationSchema, required: true },
     status: {
       type: String,
-      enum: [
-        "requested",
-        "accepted",
-        "picked_up",
-        "in_transit",
-        "completed",
-        "canceled",
-      ],
-      default: "requested",
+      enum: Object.values(RideStatus),
+      default: RideStatus.REQUESTED,
+      index: true,
     },
-    statusTimestamps: {
-      requestedAt: { type: Date, default: Date.now },
+    fare: { type: Number },
+    timeline: {
+      requestedAt: { type: Date, default: () => new Date() },
       acceptedAt: Date,
       pickedUpAt: Date,
       inTransitAt: Date,
       completedAt: Date,
       canceledAt: Date,
     },
-    fare: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
 
-export const Ride = model("Ride", rideSchema);
+export const Ride = mongoose.model<IRide>('Ride', rideSchema);

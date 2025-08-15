@@ -1,32 +1,23 @@
 import { Document, Types } from 'mongoose';
+import { RideStatus } from '../../interfaces/common';
 
-export type RideStatus =
-  | 'requested'
-  | 'accepted'
-  | 'picked_up'
-  | 'in_transit'
-  | 'completed'
-  | 'cancelled';
+export interface ILocation {
+  address?: string;
+  coordinates: { lat: number; lng: number };
+}
 
 export interface IRide extends Document {
   rider: Types.ObjectId;
   driver?: Types.ObjectId;
-  pickupLocation: {
-    address: string;
-    coordinates: [number, number]; // [lng, lat]
-  };
-  destination: {
-    address: string;
-    coordinates: [number, number];
-  };
+  pickup: ILocation;
+  destination: ILocation;
   status: RideStatus;
   fare?: number;
-  distance?: number;
-  duration?: string;
-  startedAt?: Date;
-  completedAt?: Date;
-  cancelledAt?: Date;
-  cancellationReason?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  timeline: {
+    requestedAt: Date;
+    acceptedAt?: Date;
+    pickedUpAt?: Date;
+    inTransitAt?: Date;
+    completedAt?: Date;
+    canceledAt?: Date;
+  };}

@@ -1,15 +1,9 @@
-// src/routes/auth.routes.ts
-
-import express from 'express';
+import { Router } from 'express';
 import { AuthController } from './auth.controller';
-import { checkAuth } from '../../middlewares/checkAuth';
-import { Role } from '../user/user.interface';
 
-const router = express.Router();
+const router = Router();
 
-router.post('/register', AuthController.registerUser);
-router.post('/login', AuthController.credentialsLogin);
+router.post('/register', AuthController.register);
+router.post('/login', AuthController.login);
 
-
-
-export const AuthRoutes = router;
+export default router

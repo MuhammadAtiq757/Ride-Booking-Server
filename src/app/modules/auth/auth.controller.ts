@@ -1,47 +1,17 @@
-// src/controllers/auth.controller.ts
-
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
-import { catchAsync } from '../../utils/catchAsync';
-import { sendResponse } from '../../utils/sendResponse';
+import { success } from '../../utils/ApiResponse';
 import { AuthService } from './auth.service';
-import { AppError } from '../../errorHelpers/AppError';
-
-const registerUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const user = await AuthService.registerUser(req.body);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.CREATED,
-      message: 'User registered successfully',
-      data: user,
-    });
-  }
-);
-
-const credentialsLogin = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return next(new AppError('Email and password are required', 400));
-    }
-
-    const loginInfo = await AuthService.credentialsLogin(email, password);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.OK,
-      message: 'User logged in successfully',
-      data: loginInfo,
-    });
-  }
-);
-
-
+import { catchAsync } from '../../utils/catchAsync';
 
 export const AuthController = {
-  registerUser,
-  credentialsLogin,
+  register: catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.register(req.body);
+    res.status(httpStatus.CREATED).json(success('Registered', result));
+  }),
+
+  login: catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.login(req.body);
+    res.status(httpStatus.OK).json(success('Logged in', result));
+  }),
 };

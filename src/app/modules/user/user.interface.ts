@@ -1,26 +1,18 @@
-// interfaces/user.interface.ts
+import { Document } from 'mongoose';
+import { DriverStatus, UserRole, UserStatus } from '../../interfaces/common';
 
-// src/constants/role.enum.ts
-export enum Role {
-  ADMIN = 'admin',
-  DRIVER = 'driver',
-  RIDER = 'rider'
-}
-
-
-export interface IUser {
-  _id?: string;
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role?: Role;
-  isBlocked?: boolean;
-  isApproved?: boolean; 
-  availability?: boolean; 
-    vehicleInfo?: {
-    type: string;
-    plate: string;
+  role: UserRole;
+  status: UserStatus;
+  driver?: {
+    status: DriverStatus; // approval & activity
+    vehicleType?: string;
+    vehicleNumber?: string;
+    isAvailable?: boolean; // online/offline
+    earnings?: number;
   };
-  createdAt?: Date;
-  updatedAt?: Date;
+  comparePassword(candidate: string): Promise<boolean>;
 }

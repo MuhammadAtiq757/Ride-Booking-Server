@@ -2,7 +2,7 @@
 import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
-import { router } from "./app/routes";
+import router from "./app/routes";
 // import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 // import notFound from "./app/middlewares/notFound";
 
