@@ -4,13 +4,9 @@ import app from "./app";
 
 let server: Server;
 
-
-
 const startServer = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://muhammadatiq757:vcm5WBVx5dyg8JNs@cluster0.pfpfkus.mongodb.net/Ride-Booking?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    await mongoose.connect(process.env.DATABASE_URL as string);
 
     console.log("Connected to DB!!");
     server = app.listen(5000, () => {
@@ -23,10 +19,9 @@ const startServer = async () => {
 
 startServer();
 
-
 // 1. unhandled rejection error
 process.on("unhandledRejection", (err) => {
-  console.log("unhandled Rejection detected... server sutting down..", err)
+  console.log("unhandled Rejection detected... server sutting down..", err);
   if (server) {
     server.close(() => {
       process.exit(1);
@@ -35,11 +30,13 @@ process.on("unhandledRejection", (err) => {
 
   process.exit(1);
 });
-
 
 // 2. uncaught rejection error
 process.on("uncaughtException", (err) => {
-  console.log("uncaught exceptional error detected... server sutting down..", err)
+  console.log(
+    "uncaught exceptional error detected... server sutting down..",
+    err
+  );
   if (server) {
     server.close(() => {
       process.exit(1);
@@ -48,11 +45,10 @@ process.on("uncaughtException", (err) => {
 
   process.exit(1);
 });
-
 
 // 3. signal termination (sigterm) error
 process.on("SIGTERM", () => {
-  console.log("SIGTERM Signal Rechived... server sutting down..")
+  console.log("SIGTERM Signal Rechived... server sutting down..");
   if (server) {
     server.close(() => {
       process.exit(1);
@@ -61,5 +57,3 @@ process.on("SIGTERM", () => {
 
   process.exit(1);
 });
-
-
