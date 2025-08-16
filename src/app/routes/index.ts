@@ -9,4 +9,5 @@ router.use('/auth', authRoutes);
 router.use('/rides', rideRoutes);
 router.use('/drivers', driverRoutes);
 router.use('/admin', adminRoutes);
+
 export default router;

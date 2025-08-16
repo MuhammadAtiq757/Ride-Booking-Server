@@ -19,6 +19,7 @@ const driverSchema = new Schema(
   { _id: false }
 );
 
+
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
@@ -35,7 +36,11 @@ const userSchema = new Schema<IUser>(
       enum: Object.values(UserStatus),
       default: UserStatus.ACTIVE,
     },
-    driver: { type: driverSchema, required: false },
+     driver: {
+      type: driverSchema,
+      required: false,
+      default: () => ({ status: DriverStatus.PENDING, isAvailable: false }),
+    },
   },
   { timestamps: true }
 );

@@ -7,11 +7,11 @@ export interface IUser extends Document {
   password: string;
   role: UserRole;
   status: UserStatus;
-  driver?: {
-    status: DriverStatus; // approval & activity
+   driver?: {
+    status: DriverStatus;
     vehicleType?: string;
     vehicleNumber?: string;
-    isAvailable?: boolean; // online/offline
+    isAvailable?: boolean;
     earnings?: number;
   };
   comparePassword(candidate: string): Promise<boolean>;
