@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const auth_1 = require("../../middlewares/auth");
+const driver_controller_1 = require("./driver.controller");
+const common_1 = require("../../interfaces/common");
+const router = (0, express_1.Router)();
+router.patch('/:id/accept', checkAuth_1.checkAuth, (0, auth_1.allowRoles)(common_1.UserRole.DRIVER), driver_controller_1.DriverController.accept);
+router.patch('/:id/status', checkAuth_1.checkAuth, (0, auth_1.allowRoles)(common_1.UserRole.DRIVER), driver_controller_1.DriverController.updateStatus);
+router.patch('/me/availability', checkAuth_1.checkAuth, (0, auth_1.allowRoles)(common_1.UserRole.DRIVER), driver_controller_1.DriverController.setAvailability);
+router.get('/me/earnings', checkAuth_1.checkAuth, (0, auth_1.allowRoles)(common_1.UserRole.DRIVER), driver_controller_1.DriverController.earnings);
+exports.default = router;
